@@ -10,10 +10,6 @@ die_on_bad_cd()
 sudo apt-get install -y python-dev postgresql libpq-dev python-pip python-virtualenv git-core solr-jetty &&
 sudo -H pip install --upgrade pip &&
 
-#fixes UndefinedEnvironmentName: 'extra' does not exist in evaluation environment error on ubuntu 16.04
-# https://github.com/getsentry/sentry/issues/3143
-sudo pip install setuptools==20.4
-
 #create ckan user
 sudo adduser ckan
 
@@ -33,12 +29,11 @@ export LC_CTYPE="en_US.UTF-8"
 sudo su ckan #enter password
 virtualenv --no-site-packages /usr/lib/ckan/default
 . /usr/lib/ckan/default/bin/activate
-pip install setuptools==20.4 &&
 
 #deactivate
 
 cd ~ || die_on_bad_cd "$HOME" &&
-pip install -e 'git+https://github.com/ckan/ckan.git@ckan-2.5.2#egg=ckan' &&
+pip install -e 'git+https://github.com/ckan/ckan.git@ckan-2.7' &&
 pip install -r /usr/lib/ckan/default/src/ckan/requirements.txt --allow-all-external &&
 echo "OK"
 
@@ -87,6 +82,7 @@ telnet localhost 8983 #should show "Escape character is '^]'"
 #create ckan configuration file
 sudo apt-get -y install python-pastescript
 
+# Verify that the ckan user directory has been created
 sudo su ckan
 cd ~ || die_on_bad_cd "$HOME"
 
